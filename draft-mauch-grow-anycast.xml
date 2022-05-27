@@ -1,0 +1,186 @@
+<?xml version="1.0"?>
+<!DOCTYPE rfc SYSTEM "rfc2629.dtd">
+<?rfc comments="yes"?>
+<?rfc compact="yes"?>
+<?rfc inline="yes"?>
+<?rfc sortrefs="yes"?>
+<?rfc subcompact="yes"?>
+<?rfc symrefs="yes"?>
+<?rfc toc="yes"?>
+<?rfc tocdepth="3"?>
+<?rfc tocindent="yes"?>
+<?rfc tocompact="yes"?>
+
+<rfc category="std" docName="draft-mauch-grow-anycast-00">
+    <front>
+        <title>BLACKHOLE BGP Community for Anycast Routes</title>
+        
+        <author fullname="Jared Mauch" initials="J." surname="Mauch">
+            <organization>Akamai Technologies</organization>
+            <address>
+                <postal>
+                    <street>8285 Reese Lane</street>
+                    <city>Ann Arbor</city>
+                    <code>48103</code>
+                    <country>USA</country>
+                </postal>
+                <email>jared@akamai.com</email>
+            </address>
+        </author>
+
+        <author fullname="Job Snijders" initials="J." surname="Snijders">
+               <organization abbrev="Fastly">Fastly</organization>
+               <address>
+                   <postal>
+                       <street>Theodorus Majofskistraat 100</street>
+                       <code>1065 SZ</code>
+                       <city>Amsterdam</city>
+                       <country>NL</country>
+                   </postal>
+                   <email>job@ntt.net</email>
+               </address>
+          </author>
+
+        <date month="June" year="2022" />
+
+        <abstract>
+            <t>
+                This document describes the use of a well-known Border Gateway
+                Protocol (BGP) community for identifying anycast NLRI in IP networks. This
+                well-known advisory transitive BGP community, namely ANYCAST,
+                allows an origin AS to specify to a neighboring network
+                this route is anycasted.
+            </t>
+        </abstract>
+
+        <note title="Requirements Language">
+
+            <t>
+                The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL
+                NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "MAY", and
+                "OPTIONAL" are to be interpreted as described in <xref target="RFC2119" />
+                only when they appear in all upper case. They may also appear
+                in lower or mixed case as English words, without normative
+                meaning.
+            </t>
+
+        </note>
+
+    </front>
+
+    <middle>
+        <section anchor="intro" title="Introduction">
+            <t>
+                Network infrastructures have been increasingly seeing anycast
+                routes. In order to make traffic engineering easier for partners,
+                IP networks have offered BGP communities to signal route attributes.
+            </t>
+
+            <t>
+                Networks having a global footprint utilize BGP communities to signal
+                a variety of attributes, including what prefixes are local, remote,
+                customer routes or peers.  Having a method to identify anycasted
+                routes is of benefit to determine if there is a desire to have a strong
+                affinity to an in city or geography route.
+            </t>
+
+            <t>
+                BGP and other routing protocols have the ability to adjust the route
+                selection to ensure performance, through attributes like weight or local-preference.
+                By having a well-known <xref target="RFC1997">BGP
+                community</xref> is defined for operational ease will assist operators
+                in ensuring they and their partners have the performance they target.
+            </t>
+
+            <t>
+                Making it considerably easier for network operators to utilize
+                such a community makes operations easier.
+            </t>
+        </section>
+
+        <section anchor="attribute" title="BLACKHOLE Attribute">
+            <t>
+                This document defines the use of a new well-known BGP transitive community,
+                   ANYCAST.
+               </t>
+
+               <t>
+                   The semantics of this attribute allow a network to interpret
+                   the presence of this community as an advisory qualification for
+                   any traffic being sent towards this prefix.
+               </t>
+        </section>
+
+        <section anchor="recommendation" title="Operational Recommendations">
+            <section anchor="morespecific" title="IP Prefix Announcements with ANYCAST Community Attached">
+                <t>
+                    When a network originates a route, it SHOULD tag this route with
+                    the ANYCAST BGP community.  Operators MAY implement policies 
+                    adjusting their internal route scope and selection based on the
+                    ANYCAST BGP community.
+                </t>
+            </section>
+
+        </section>
+
+        <section anchor="iana" title="IANA Considerations">
+            <t>
+                The IANA is requested to register ANYCAST as a well-known BGP community with global significance:
+                <list>
+                    <t>
+                        ANYCAST (= 0xFFFFTBD)
+                    </t>
+                </list>
+            </t>
+            <t>
+                The low-order two octets in decimal are XXX
+            </t>
+        </section>
+
+        <section anchor="security" title="Security Considerations">
+            <t>
+                BGP contains no specific mechanism to prevent the unauthorized
+                modification of information by the forwarding agent. This
+                allows routing information to be modified, removed, or false
+                information to be added by forwarding agents.  Recipients of
+                routing information are not able to detect this modification.
+                Also, <xref target="RFC6810">RPKI</xref> and
+                <xref target="I-D.ietf-sidr-bgpsec-overview">BGPSec</xref> do
+                not fully resolve this situation. For instance, BGP communities
+                can still be added or altered by a forwarding agent even if
+                RPKI and BGPSec are in place.
+            </t>
+            <t>
+                The ANYCAST BGP community does not alter this situation.
+            </t>
+
+        </section>
+
+        
+    </middle>
+
+    <back>
+
+        <references title="Normative References">
+           <?rfc include="reference.RFC.1997"?>
+           <?rfc include="reference.RFC.2119"?>
+        </references>
+
+        <references title="Informative References">
+           <?rfc include="reference.RFC.3882"?>
+           <?rfc include="reference.RFC.5635"?>
+           <?rfc include="reference.RFC.6810"?>
+           <?rfc include="reference.RFC.7454"?>
+           <?rfc include="reference.I-D.ietf-sidr-bgpsec-overview"?>
+        </references>
+        
+        <section anchor="acknowledgements" title="Acknowledgements">
+            <t>
+                The authors would like to gratefully acknowledge many people
+                who have contributed discussions and ideas to the making of
+                this proposal. They include TBD.
+            </t>
+        </section>
+    </back>
+
+</rfc>
