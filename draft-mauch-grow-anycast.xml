@@ -13,7 +13,7 @@
 
 <rfc category="std" docName="draft-mauch-grow-anycast-00">
     <front>
-        <title>BLACKHOLE BGP Community for Anycast Routes</title>
+        <title>ANYCAST BGP Community for Anycast Routes</title>
         
         <author fullname="Jared Mauch" initials="J." surname="Mauch">
             <organization>Akamai Technologies</organization>
@@ -98,7 +98,7 @@
             </t>
         </section>
 
-        <section anchor="attribute" title="BLACKHOLE Attribute">
+        <section anchor="attribute" title="ANYCAST Attribute">
             <t>
                 This document defines the use of a new well-known BGP transitive community,
                    ANYCAST.
